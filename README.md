@@ -1,1 +1,1 @@
-# Matrix-Solver-console-Application
+Created a Java-based console application to perform fundamental matrix operations including matrix type identification, addition, multiplication, determinant calculation (2x2 & 3x3), and transpose. Incorporated matrix validation logic, conditional operations based on matrix compatibility, and interactive CLI input-output for user convenience.
