@@ -1,0 +1,158 @@
+import java.util.Scanner;
+
+public class MatrixSolver {
+
+    private static void inquireMatrix() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter number of rows: ");
+        int rows = scanner.nextInt();
+        System.out.print("Enter number of columns: ");
+        int cols = scanner.nextInt();
+
+        if (rows == cols) {
+            System.out.println("Square Matrix");
+            System.out.println("Addition and multiplication are possible.");
+        } else {
+            System.out.println("Rectangular Matrix");
+            System.out.println("Addition is Possible but multiplication is not possible.");
+        }
+    }
+
+    private static void performMatrixOperation() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter details for first matrix:");
+        double[][] matrix1 = inputMatrix(scanner);
+        System.out.println("Enter details for second matrix:");
+        double[][] matrix2 = inputMatrix(scanner);
+
+        if (matrix1.length != matrix2.length || matrix1[0].length != matrix2[0].length) {
+            System.out.println("Addition and multiplication are not possible.");
+            return;
+        }
+
+        // Addition
+        double[][] sum = new double[matrix1.length][matrix1[0].length];
+        for (int i = 0; i < matrix1.length; i++) {
+            for (int j = 0; j < matrix1[0].length; j++) {
+                sum[i][j] = matrix1[i][j] + matrix2[i][j];
+            }
+        }
+
+        // Multiplication
+        double[][] product = new double[matrix1.length][matrix2[0].length];
+        for (int i = 0; i < matrix1.length; i++) {
+            for (int j = 0; j < matrix2[0].length; j++) {
+                for (int k = 0; k < matrix1[0].length; k++) {
+                    product[i][j] += matrix1[i][k] * matrix2[k][j];
+                }
+            }
+        }
+
+        System.out.println("Addition of matrices:");
+        displayMatrix(sum);
+        System.out.println("Multiplication of matrices:");
+        displayMatrix(product);
+    }
+
+
+    private static void determinantAndTranspose() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter number of rows (only 2 or 3): ");
+        int rows = scanner.nextInt();
+
+        if (rows != 2 && rows != 3) {
+            System.out.println("Sorry, this code is not applicable to solve that.");
+            return;
+        }
+
+        System.out.println("Enter details for the matrix:");
+        double[][] matrix = inputMatrix(scanner);
+
+        if (rows == 2) {
+            double determinant = matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0];
+            System.out.println("Determinant: " + determinant);
+            if (determinant == 0.0) {
+                System.out.println("The matrix is Singular and inverse is possible.");
+            } else {
+                System.out.println("The matrix is non-singular and inverse is not possible.");
+            }
+        } else { // 3x3 matrix
+            double determinant = matrix[0][0] * (matrix[1][1] * matrix[2][2] - matrix[1][2] * matrix[2][1])
+                    - matrix[0][1] * (matrix[1][0] * matrix[2][2] - matrix[1][2] * matrix[2][0])
+                    + matrix[0][2] * (matrix[1][0] * matrix[2][1] - matrix[1][1] * matrix[2][0]);
+            System.out.println("Determinant: " + determinant);
+
+            if (determinant == 0.0) {
+                System.out.println("The matrix is Singular and inverse is possible.");
+            } else {
+                System.out.println("The matrix is non-singular and inverse is not possible.");
+            }
+        }
+        System.out.println("Transpose of matrix:");
+        double[][] transpose = new double[matrix[0].length][matrix.length];
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                transpose[j][i] = matrix[i][j];
+            }
+        }
+        displayMatrix(transpose);
+    }
+
+    private static double[][] inputMatrix(Scanner scanner) {
+        System.out.print("Enter number of rows: ");
+        int rows = scanner.nextInt();
+        System.out.print("Enter number of columns: ");
+        int cols = scanner.nextInt();
+
+        double[][] matrix = new double[rows][cols];
+        System.out.println("Enter elements of the matrix:");
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                matrix[i][j] = scanner.nextDouble();
+            }
+        }
+        return matrix;
+    }
+
+    // Modified displayMatrix method to display integer values
+    private static void displayMatrix(double[][] matrix) {
+        for (double[] row : matrix) {
+            for (double element : row) {
+                System.out.print((int) element + " "); // Convert double to int for printing
+            }
+            System.out.println();
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int choice;
+
+        do {
+            System.out.println("Select an option:");
+            System.out.println("1. Inquire the matrix");
+            System.out.println("2. Addition/Multiplication of matrices");
+            System.out.println("3. Determinant/Transpose of matrix");
+            System.out.println("4. Leave");
+            System.out.print("Enter your choice: ");
+            choice = scanner.nextInt();
+
+            switch (choice) {
+                case 1:
+                    inquireMatrix();
+                    break;
+                case 2:
+                    performMatrixOperation();
+                    break;
+                case 3:
+                    determinantAndTranspose();
+                    break;
+                case 4:
+                    System.out.println("Leaving...");
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please select again.");
+            }
+        } while (choice != 4);
+    }
+}
